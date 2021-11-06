@@ -98,8 +98,8 @@ const ParseTitle = (title) => {
     return newTitle; 
 }
 
-const GetSavedConent = () => {
-    user.getMe().getSavedContent().then((saved) => {
+const GetSavedConent = (imageLimit) => {
+    user.getMe().getSavedContent({amount: imageLimit}).then((saved) => {
 
         saved.forEach(save => {
             DownloadFile(save.url, save.title, () => {console.log("Downloading...")})
@@ -113,7 +113,7 @@ const startDownload = (subreddit, imageLimit, filter, time) => {
     subredditFolder = imageDirPath + subreddit + "/"; 
 
     if(subreddit.toLowerCase() === 'me')
-        GetSavedConent()
+        GetSavedConent(imageLimit)
     else if(filter.toLowerCase() === 'hot'){
         user.getSubreddit(subreddit)
             .getHot({limit: parseInt(imageLimit)})
