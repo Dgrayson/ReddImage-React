@@ -9,6 +9,8 @@ const r = require('./secrets')
 const express = require('express')
 const cors = require ('cors')
 
+let user = r.r; 
+
 
 // const subreddit = process.argv[2]; 
 // const filter = process.argv[3]
@@ -97,7 +99,7 @@ const ParseTitle = (title) => {
 }
 
 const GetSavedConent = () => {
-    r.getMe().getSavedContent().then((saved) => {
+    user.getMe().getSavedContent().then((saved) => {
 
         saved.forEach(save => {
             DownloadFile(save.url, save.title, () => {console.log("Downloading...")})
@@ -113,7 +115,7 @@ const startDownload = (subreddit, imageLimit, filter, time) => {
     if(subreddit.toLowerCase() === 'me')
         GetSavedConent()
     else if(filter.toLowerCase() === 'hot'){
-        r.getSubreddit(subreddit)
+        user.getSubreddit(subreddit)
             .getHot({limit: parseInt(imageLimit)})
             .map(post => DownloadFile(post.url, post.title, () => {
                 console.log(chalk.inverse.bold.blue('Finished...'))
@@ -124,7 +126,7 @@ const startDownload = (subreddit, imageLimit, filter, time) => {
         if(!validTime.includes(time))
             return console.log(chalk.inverse.bold.red("Please enter a valid time. 'today', 'week', 'month', 'year', 'all'"))
 
-        r.getSubreddit(subreddit)
+        user.getSubreddit(subreddit)
             .getTop({time: time, limit: parseInt(imageLimit)})
             .map(post => DownloadFile(post.url, post.title, () => {
                 console.log(chalk.inverse.bold.blue('Finished...'))
