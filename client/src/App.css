@@ -1,0 +1,48 @@
+.App {
+  text-align: center;
+  background-color: darkslategrey;
+  height: 100vh;
+}
+
+form{
+  display: flex; 
+  flex-direction: column;
+  width: 50vw;
+  height: 75vh;
+  margin: auto;
+  text-align: center;
+  background-color: darkcyan;
+
+  border-radius: 10px;
+}
+
+.form-group{
+
+}
+
+label{
+  display: block;
+  font-size: 1.5em;
+}
+
+input[type=text], input[type=number], select{
+  padding: 16px;
+  margin: 8px 0;  
+  border: 1px solid #ccc; 
+  border-radius: 8px;
+  display: inline-block;
+  width: 50%;
+
+  font-size: 1.5em;;
+}
+
+
+input[type=submit]{
+  width: 50%;
+  padding: 16px;
+  margin:auto;
+  background-color: indigo;
+  font-size: 1.5em;
+  border-radius: 12px;
+  color: white;
+}
