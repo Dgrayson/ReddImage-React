@@ -6,6 +6,8 @@ const path = require('path');
 const chalk = require('chalk'); 
 const r = require('./secrets')
 
+const cheerio = require('cheerio')
+
 const express = require('express')
 const cors = require ('cors')
 
@@ -31,14 +33,29 @@ const CreateFile = (url, title, subredditFolder, fileType) => {
 
     let imagePath = subredditFolder + ParseTitle(title) + fileType;  
 
-    console.log("IMage path is: ", imagePath)
+    console.log("IMage path is: ", imagePath + '.mp4')
 
-    if(!fs.existsSync(imagePath))
+    if(url === undefined)
+        console.log("Null url")
+    else if(!fs.existsSync(imagePath))
         request(url).pipe(fs.createWriteStream(imagePath))
     else
         console.log(chalk.inverse.redBright.bold("File already exists!"))
 }
 
+const ParseRedGifs = (res) => {
+    const $ = cheerio.load(res.body);
+
+    let url = $('meta[property="og:video"]').attr('content')
+
+    console.log(url)
+
+    return url
+
+    //console.log(res.body);
+
+    //console.log($.html());
+}
 
 const DownloadFile = (url, title, callback) => {
 
@@ -52,7 +69,7 @@ const DownloadFile = (url, title, callback) => {
 
     request({url: url}, (error, res) => {
 
-        console.log('content-type:', res.headers['content-type']);
+        // console.log('content-type:', res.headers['content-type']);
 
         // The response from from certain image hosting sites on Reddit will send back an HTML file instead of the image. 
         // It's necessary to 
@@ -77,13 +94,8 @@ const DownloadFile = (url, title, callback) => {
             }
             else if(url.includes('redgifs'))
             {
-                var splitLink = url.split('/'); 
-
-                var baseLink = 'https://thumbs2.redgifs.com/'
-
-                var newLink = baseLink + splitLink[splitLink.length - 1] + '.mp4'
-                //console.log(newLink)
-                // CreateFile(newLink, title, subredditFolder, ".mp4")
+                var newLink = ParseRedGifs(res)
+                CreateFile(newLink, title, subredditFolder, ".mp4")
             }
         }
         else{

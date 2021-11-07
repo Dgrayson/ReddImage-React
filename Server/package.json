@@ -11,8 +11,10 @@
   "dependencies": {
     "body-parser": "^1.19.0",
     "chalk": "^4.1.2",
+    "cheerio": "^1.0.0-rc.10",
     "cors": "^2.8.5",
     "express": "^4.17.1",
+    "node-html-parser": "^5.1.0",
     "postman-request": "^2.88.1-postman.30",
     "snoowrap": "^1.23.0"
   }
